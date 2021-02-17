@@ -1,0 +1,100 @@
+class Node {
+
+    public int key;
+    public Node prev;
+    public Node next;
+
+    public Node(int k) {
+        this.key = k;
+        this.prev = null;
+        this.next = null;
+    }
+
+}
+class DLL {
+    Node head, tail; // Creates a head and tail for the operation of list
+
+    public void insertInList(int k, int index) {
+        if (this.head == null) { // check for empty list
+            head = tail = new Node(k);
+            return;
+        } else {
+            Node n = new Node(k);
+            tail.next = n;
+            n.prev = tail;
+            tail = tail.next;
+            System.out.println("Integer " + k + " was added at " + index
+                    + " position of array");
+        }
+    }
+    public boolean contains(int k) {
+        Node t = this.head; // making a temporary node so that the list is 
+                            //undisturbed
+        while (t != null) {
+            if (t.key == k) {
+                return true;
+            } else {
+                t = t.next;
+            }
+        }
+        return false; // the compiler only comes to this return statement 
+                      // because the number wasnt found 
+    }
+}
+
+public class Hashtable {
+    DLL array[] = null; //the bucket I was talking about
+    int capacity; // size of the bucket
+    
+    Hashtable(int c) { // constructor 
+        this.capacity = c;
+        this.array = new DLL[c];
+    }
+    public void insert(int k) {
+        int index = k % capacity; //avoided a hash, instead 
+                                  //just found the remainder.
+        DLL d = array[index];
+        if (d == null) {
+            d = new DLL();
+            d.insertInList(k, index); // recursion cause im cool
+            array[index] = d;
+        } else {
+            d.insertInList(k, index); 
+        }
+    }
+    public boolean contains(int k) {
+        int index = k % capacity; // this step is what makes hashmaps unique, 
+                                 
+        DLL d = array[index];
+        if (d == null) {
+            return false;
+        } else {
+            boolean isFound = d.contains(k);
+            return isFound;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Hashtable ht = new Hashtable(3);
+        ht.insert(123465);
+        ht.insert(6264);
+        ht.insert(759734658);
+        ht.insert(5353547);
+        ht.insert(5124543);
+        ht.insert(1234556);
+        ht.insert(758940);
+        ht.insert(9764829);
+        ht.insert(765361);
+        ht.insert(5353532);
+
+        boolean isFound = ht.contains(123);
+
+        if (true == isFound) {
+            System.out.println(123 + " found");
+        }
+        else {
+            System.out.println(123 + " not found");
+        }
+    }
+}
